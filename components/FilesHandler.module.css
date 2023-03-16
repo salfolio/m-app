@@ -1,0 +1,57 @@
+.dropZone {
+    border: 2px dashed #ddd;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .dropZone p {
+    margin: 0 0 20px;
+  }
+  
+  .fileList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .fileList li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .fileInfo {
+    flex-grow: 1;
+  }
+  
+  .deleteButton {
+    margin: 0.5rem;
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .deleteButton:hover {
+    background-color: #cc0000;
+  }
+  
+
+
+  .runButton {
+    margin: 1rem;
+    background-color: #00d907;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .runButton:hover {
+    background-color: #00ac06;
+  }
+  
