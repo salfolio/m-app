@@ -1,85 +1,74 @@
-import React from "react";
-import { useDropzone } from "react-dropzone";
-import { useState } from "react";
-import styles from "./FilesHandler.module.css";
+import React, { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import styles from './FilesHandler.module.css';
 
-export default function FilesHandler(props) {
-  const { onDrop, ...rest } = props;
-
+const FileHandler = () => {
   const [files, setFiles] = useState([]);
 
-  const handleDrop = (acceptedFiles) => {
-    // Filter the accepted files to only include XLSM files
-    const xlsmFiles = acceptedFiles.filter((file) => file.type === "application/vnd.ms-excel.sheet.macroEnabled.12");
-    // Add the XLSM files to the files state array
-    setFiles((prevFiles) => [...prevFiles, ...xlsmFiles]);
-    // Call the onDrop callback function with the XLSM files
-    if (onDrop) {
-      onDrop(xlsmFiles);
+  // handle file drop
+  const onDrop = (acceptedFiles) => {
+    const newFiles = acceptedFiles.map((file) =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      })
+    );
+
+    // concatenate arrays
+    setFiles([...files, ...newFiles]);
+  };
+
+  // handle file delete
+  const onDelete = (index) => {
+    const newFiles = [...files];
+    newFiles.splice(index, 1);
+    setFiles(newFiles);
+  };
+
+  // handle script execution
+  const onRunScript = async () => {
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i]);
+    }
+    try {
+      const response = await axios.post('/api/upload', formData);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const handleDelete = (file) => {
-    // Remove the file from the files state array
-    setFiles((prevFiles) => prevFiles.filter((f) => f !== file));
-  };
+  // render file preview cards
+  const renderFiles = () =>
+    files.map((file, index) => (
+      <div className={styles.filePreview} key={file.name}>
+        <div className={styles.fileDetails}>
+          <div className={styles.fileName}>{file.name}</div>
+          <div className={styles.fileSize}>{file.size / 1024} KB</div>
+        </div>
+        <div className={styles.fileDelete} onClick={() => onDelete(index)}>
+          Delete
+        </div>
+      </div>
+    ));
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleDrop,
-    accept: ".xlsm",
-    ...rest,
-  });
-
-  const runScript = () => {
-    // Make sure there are exactly 2 XLSM files uploaded
-    if (files.length !== 1) {
-      console.log("Error: Please upload 2 XLSM files.");
-      window.alert("Please Upload two files")
-      return;
-    }
-
-
-    // Call the runScript function with the file paths
-    const file1Path = files[0].path;
-    const file2Path = files[1].path;
-    
-    runScriptPython(file1Path, file2Path)
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
-  };
-
+  // useDropzone hook
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: true });
 
   return (
-    <div>
-      <div {...getRootProps()} className={styles.dropZone}>
+    <div className={styles.fileHandler}>
+      <div className={styles.dropZone} {...getRootProps()}>
         <input {...getInputProps()} />
-        {isDragActive ? (
-          <p>Drop the XLSM files here...</p>
-        ) : (
-          <p>Drag and drop XLSM files here, or click to select files</p>
-        )}
-      </div>
-      {files.length > 0 && (
-        <div>
-          <h2>Uploaded files:</h2>
-          <ul className={styles.filesList}>
-            {files.map((file) => (
-              <li key={file.name}>
-                <span className={styles.fileInfo}>
-                  {file.name} ({file.size} bytes)
-                </span>
-                <button
-                  className={styles.deleteButton}
-                  onClick={() => handleDelete(file)}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
+        <div className={styles.dropzoneText}>
+          Drag and drop files here or click to select files
         </div>
-      )}
-      <button className={styles.runButton} onClick={runScript}>Run Script</button>
+      </div>
+      <div className={styles.filePreviews}>{renderFiles()}</div>
+      <button className={styles.runScriptBtn} onClick={onRunScript}>
+        Run Script
+      </button>
     </div>
   );
-}
+};
+
+export default FileHandler;

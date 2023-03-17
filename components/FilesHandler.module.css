@@ -1,4 +1,87 @@
+.fileHandler {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
 .dropZone {
+  border: 2px dashed gray;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
+}
+
+.dropzoneText {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.filePreviews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.filePreview {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  width: 18rem;
+  height: 5rem;
+}
+
+.filePreview img {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.fileDetails {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fileName {
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fileSize {
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.fileDelete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.runScriptBtn {
+  background-color: #2ecc71;
+  color: white;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+/* .dropZone {
     border: 2px dashed #ddd;
     padding: 20px;
     text-align: center;
@@ -54,4 +137,4 @@
   .runButton:hover {
     background-color: #00ac06;
   }
-  
+   */
