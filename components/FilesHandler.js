@@ -10,12 +10,12 @@ export default function FilesHandler(props) {
 
   const handleDrop = (acceptedFiles) => {
     // Filter the accepted files to only include CSV files
-    const csvFiles = acceptedFiles.filter((file) => file.type === "text/csv");
+    const xlsmFiles = acceptedFiles.filter((file) => file.type === "text/csv");
     // Add the CSV files to the files state array
-    setFiles((prevFiles) => [...prevFiles, ...csvFiles]);
+    setFiles((prevFiles) => [...prevFiles, ...xlsmFiles]);
     // Call the onDrop callback function with the CSV files
     if (onDrop) {
-      onDrop(csvFiles);
+      onDrop(xlsmFiles);
     }
   };
 
@@ -26,7 +26,7 @@ export default function FilesHandler(props) {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleDrop,
-    accept: ".csv",
+    accept: ".xlsm",
     ...rest,
   });
 
